@@ -1,8 +1,8 @@
 # Proyecto 1 · Mi web en AWS: Librería Tinta
 
-* **Alumna:** <Mª Inés Antón Castelló>
+* **Alumna:** Mª Inés Antón Castelló
 * **Entorno:** AWS Academy Learner Lab · Región `us-east-1`
-* **Vídeo demostración:** [Ver vídeo en YouTube / Drive](https://enlace)
+* **Vídeo demostración:** [Ver vídeo en YouTube](https://enlace)
 
 ---
 
@@ -51,7 +51,7 @@ Se ha lanzado la instancia `libreria-web` (`t3.micro`, Amazon Linux 2023) en `li
 
 * **Detalles y etiquetas de la instancia:**
   ![Detalles EC2](img/6a-ec2-detalles.png)
-  ![Detalles EC2](img/6b-ec2-etiquetas.png)
+  ![Etiquetas EC2](img/6b-ec2-etiquetas.png)
   
 * **Comprobación de la web en el navegador:**
   ![Web en navegador](img/7-web-navegador.png)
@@ -69,8 +69,28 @@ Se ha lanzado la instancia `libreria-web` (`t3.micro`, Amazon Linux 2023) en `li
 ## 3. Nivel Medio (DNS ponderado con Route 53)
 
 ### M1. Configuración de Route 53 y reparto 80/20
-  
+
+1. Se han habilitado las opciones *Resolución de DNS* y *Nombres de host DNS* en `libreria-vpc`.
+2. Se ha desplegado una segunda instancia (`libreria-web-2`) usando [`scripts/user-data2.sh`](scripts/user-data2.sh).
+![Webs en navegador](img/9a-webs-navegador.png)
+
+3. Se ha creado una **Private Hosted Zone** llamada `libreria.lab` asociada a `libreria-vpc` con dos registros `A` ponderados para `web.libreria.lab`:
+   * **Servidor 1 (`10.0.1.54`):** Peso `80`
+   * **Servidor 2 (`10.0.1.245`):** Peso `20`
+
+![Registros Route 53](img/9b-route53-registros.png)
+
+* **Comprobación desde dentro de la VPC (`dig` y `curl`):**
+  ![Comprobación DNS](img/10-comprobacion-dns.png)
+
 ### M2. Actualización del coste
+
+* **Enlace a la estimación actualizada:** [Ver presupuesto Nivel Medio](https://calculator.aws/#/estimate?id=57ebec69e2eb3ae54e8dc2c72d28583734a619f4)
+* **Coste mensual estimado:** ~16,46 USD/mes (2 instancias `t3.micro` 24/7 + 1 zona hospedada en Route 53).
+
+![Presupuesto Nivel Medio](img/11-presupuesto-medio.png)
+
+---
 
 ## 4. Nivel Avanzado (Automatización con AWS CLI)
 
