@@ -2,7 +2,6 @@
 
 * **Alumna:** Mª Inés Antón Castelló
 * **Entorno:** AWS Academy Learner Lab · Región `us-east-1`
-* **Vídeo demostración:** [Ver vídeo en YouTube](https://enlace)
 
 ---
 
@@ -98,7 +97,7 @@ Se ha lanzado la instancia `libreria-web` (`t3.micro`, Amazon Linux 2023) en `li
 
 * **Herramienta utilizada:** Gemini (Google)
 * **Prompts útiles empleados:**
-  1. *"Dame una plantilla completa en Markdown para el README.md que cumpla con todos los requisitos de entrega del proyecto, incluyendo el cálculo de costes y que la tenga que rellenar yo."*
+  * *"Dame una plantilla completa en Markdown para el README.md que cumpla con todos los requisitos de entrega del proyecto, incluyendo el cálculo de costes y que la tenga que rellenar yo."*
   
 * **Error o propuesta incorrecta detectada y corregida:**
   * *Propuesta inicial:* 
