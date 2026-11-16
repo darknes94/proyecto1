@@ -1,6 +1,6 @@
 # Proyecto 1 · Mi web en AWS: Librería Tinta
 
-* **Alumno:** <Tu Nombre y Primer Apellido>
+* **Alumna:** <Mª Inés Antón Castelló>
 * **Entorno:** AWS Academy Learner Lab · Región `us-east-1`
 * **Vídeo demostración:** [Ver vídeo en YouTube / Drive](https://enlace)
 
@@ -62,7 +62,7 @@ Se ha lanzado la instancia `libreria-web` (`t3.micro`, Amazon Linux 2023) en `li
 * **Coste mensual estimado:** ~8,23 USD/mes (1 instancia `t3.micro` Linux On-Demand funcionando 24/7 + 8 GB de almacenamiento EBS `gp3` en `us-east-1`).
 * **Cómo abaratar el coste:** Dado que es una librería de barrio y el tráfico de madrugada es nulo, se podría reducir el gasto programando el apagado automático de la instancia fuera del horario comercial con *AWS Instance Scheduler*, cambiando a una instancia ARM más económica como `t4g.micro`, o contratando un *EC2 Instance Savings Plan* a 1 o 3 años.
 
-![Presupuesto Nivel Básico](img/8-presupuesto.png)
+![Presupuesto Nivel Básico](img/8-presupuesto-basico.png)
 
 ---
 
