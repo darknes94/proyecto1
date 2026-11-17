@@ -114,11 +114,19 @@ for i in {1..20}; do curl -s [http://web.libreria.lab](http://web.libreria.lab) 
 
 ## 4. Nivel Avanzado (Automatización con AWS CLI)
 
-El script [`scripts/desplegar.sh`](scripts/desplegar.sh) automatiza la obtención de la última AMI de Amazon Linux 2023, la creación del grupo de seguridad con sus reglas y el lanzamiento de la instancia EC2 esperando hasta obtener su IP pública.
-Los dos scripts de desplegar.sh y user-data1.sh deben estar juntos en la misma carpeta.
+Para automatizar el despliegue sin depender de la consola web, se ha desarrollado el script [`scripts/desplegar.sh`](scripts/desplegar.sh), que ejecuta secuencialmente las siguientes tareas mediante la terminal de  **AWS CLI**:
+
+1. Obtiene dinámicamente el ID de la última AMI oficial de **Amazon Linux 2023**.
+2. Crea el grupo de seguridad (`libreria-web-cli-sg`) y configura las reglas de entrada para los puertos **80 (HTTP)** y **22 (SSH)**.
+3. Lanza la instancia EC2 asociando el script de arranque [`scripts/user-data1.sh`](scripts/user-data1.sh).
+4. Espera a que la máquina esté en estado `running` y devuelve por pantalla su dirección **IP pública**.
+
+### Ejecución del script
+
+> **Nota:** Dado que el comando `aws ec2 run-instances` referencia el archivo mediante la ruta relativa `file://user-data1.sh`, ambos scripts deben estar en la misma carpeta.
 
 ```bash
-# Ejecución del script
+# Entrar al directorio de scripts, dar permisos de ejecución al propietario y lanzar el despliegue
 chmod 700 desplegar.sh
 ./desplegar.sh
 ```
