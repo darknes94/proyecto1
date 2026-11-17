@@ -1,16 +1,16 @@
 # Proyecto 1 · Mi web en AWS: Librería Tinta
 
 * **Alumna:** Mª Inés Antón Castelló
-* **Entorno:** AWS Academy Learner Lab · Región `us-east-1`
+* **Entorno:** AWS Academy Learner Lab · Región `us-east-1` (Virginia del norte)
 <!-- * **Vídeo demostración:** [Ver vídeo en YouTube / Drive](https://enlace) -->
 
 ---
 
 ## 1. Arquitectura del proyecto
 
-A continuación se muestra el diagrama de la infraestructura desplegada en `us-east-1`:
+A continuación se muestra el diagrama de la infraestructura desplegada en `us-east-1` (Virginia del norte):
 
-![Diagrama de arquitectura](img/diagrama.png)
+  ![Diagrama de arquitectura](img/diagrama.png)
 
 ---
 
@@ -18,14 +18,19 @@ A continuación se muestra el diagrama de la infraestructura desplegada en `us-e
 
 ### B1. Diseño de red (VPC)
 
-Se han creado manualmente los siguientes recursos en `us-east-1`:
+Se han creado manualmente los siguientes recursos en `us-east-1` (Virginia del norte):
 
-* **VPC (`libreria-vpc`):** Bloque CIDR `10.0.0.0/16`.
+* **VPC (`libreria-vpc`):** 
+  * **Bloque CIDR:** `10.0.0.0/16`
+  * **Opciones DNS:** Habilitadas *Resolución de DNS* y *Nombres de host DNS* (necesarias para el enrutamiento ponderado con Route 53 del apartado 3).
   ![VPC](img/1-vpc.png)
+  
 * **Subred pública (`libreria-publica`):** Bloque CIDR `10.0.1.0/24` en la zona de disponibilidad `us-east-1a`, con asignación automática de IPv4 pública activada.
   ![Subred](img/2-subred.png)
+  
 * **Internet Gateway (`libreria-igw`):** Asociado a `libreria-vpc`.
   ![Internet Gateway](img/3-igw-puerta-enlace.png)
+  
 * **Tabla de rutas (`libreria-rt-publica`):** Ruta por defecto `0.0.0.0/0` apuntando a `libreria-igw` y asociada explícitamente a `libreria-publica`.
   ![Tabla de rutas](img/4a-tabla-rutas.png)
   ![Tabla de rutas - Asociación subred](img/4b-tabla-rutas-asociacion-subred.png)
@@ -40,7 +45,7 @@ Se ha creado el grupo de seguridad `libreria-web-sg` dentro de `libreria-vpc` co
 * **HTTP (TCP 80):** Origen `0.0.0.0/0` (acceso público para los clientes de la web).
 * **SSH (TCP 22):** Origen `178.236.127.194/32` (acceso restringido únicamente al administrador).
 
-![Grupo de seguridad](img/5-security-group.png)
+  ![Grupo de seguridad](img/5-security-group.png)
 
 > **¿Por qué el puerto SSH sólo se abre a mi IP?**  
 > Porque desde este puerto se permite el acceso remoto y la administración total del servidor. Al restringirlo sólo para mi IP pública, se evitan ataques de fuerza bruta y accesos no autorizados desde cualquier otro punto de Internet.
@@ -62,7 +67,7 @@ Se ha lanzado la instancia `libreria-web` (`t3.micro`, Amazon Linux 2023) en `li
 * **Coste mensual estimado:** ~8,23 USD/mes (1 instancia `t3.micro` Linux On-Demand funcionando 24/7 + 8 GB de almacenamiento EBS `gp3` en `us-east-1`).
 * **Cómo abaratar el coste:** Dado que es una librería de barrio y el tráfico de madrugada es nulo, se podría reducir el gasto programando el apagado automático de la instancia fuera del horario comercial con *AWS Instance Scheduler*, cambiando a una instancia ARM más económica como `t4g.micro`, o contratando un *EC2 Instance Savings Plan* a 1 o 3 años.
 
-![Presupuesto Nivel Básico](img/8-presupuesto-basico.png)
+  ![Presupuesto Nivel Básico](img/8-presupuesto-basico.png)
 
 ---
 
@@ -70,25 +75,40 @@ Se ha lanzado la instancia `libreria-web` (`t3.micro`, Amazon Linux 2023) en `li
 
 ### M1. Configuración de Route 53 y reparto 80/20
 
-1. Se han habilitado las opciones *Resolución de DNS* y *Nombres de host DNS* en `libreria-vpc`.
+1. Anteriormente, en el apartado B1, ya se habilitaron las opciones *Resolución de DNS* y *Nombres de host DNS* en la VPC `libreria-vpc`.
 2. Se ha desplegado una segunda instancia (`libreria-web-2`) usando [`scripts/user-data2.sh`](scripts/user-data2.sh).
-![Webs en navegador](img/9a-webs-navegador.png)
+  ![Webs en navegador](img/9a-webs-navegador.png)
 
 3. Se ha creado una **Private Hosted Zone** llamada `libreria.lab` asociada a `libreria-vpc` con dos registros `A` ponderados para `web.libreria.lab`:
    * **Servidor 1 (`10.0.1.54`):** Peso `80`
    * **Servidor 2 (`10.0.1.245`):** Peso `20`
-
-![Registros Route 53](img/9b-route53-registros.png)
+  ![Registros Route 53](img/9b-route53-registros.png)
 
 * **Comprobación desde dentro de la VPC (`dig` y `curl`):**
+
+```bash
+# Instalar el paquete bind-utils para disponer del comando 'dig' por si no viene preinstalado en la instancia
+sudo dnf install -y bind-utils
+
+# Devuelve una sola IP privada (puede ser distinta cada vez que se ejecute)
+dig +short web.libreria.lab
+
+# Bucle que imprime 2 líneas con el recuentro del tráfico redirigido a cada versión
+for i in $(seq 1 30); do dig +short web.libreria.lab; done | sort | uniq -c
+
+# Bucle para ver de forma más gráfica las peticiones, filtrando sólo el título de la web
+for i in {1..20}; do curl -s [http://web.libreria.lab](http://web.libreria.lab) | grep "<h1>"; done
+```
+
   ![Comprobación DNS](img/10-comprobacion-dns.png)
 
 ### M2. Actualización del coste
 
-* **Enlace a la estimación actualizada:** [Ver presupuesto Nivel Medio](https://calculator.aws/#/estimate?id=57ebec69e2eb3ae54e8dc2c72d28583734a619f4)
+* **Enlace a la estimación actualizada:** [Ver presupuesto Nivel Medio](https://calculator.aws/#/estimate?id=35f2894320b6a77cbb0b0fb8ef39810a931005ca)
 * **Coste mensual estimado:** ~16,46 USD/mes (2 instancias `t3.micro` 24/7 + 1 zona hospedada en Route 53).
+* **Comparativa y justificación:** El coste aumenta aproximadamente al doble respecto al nivel básico al incorporar una segunda instancia y la zona hospedada (aunque esta sólo suma 0,9 USD/mes).
 
-![Presupuesto Nivel Medio](img/11-presupuesto-medio.png)
+  ![Presupuesto Nivel Medio](img/11-presupuesto-medio.png)
 
 ---
 
@@ -116,6 +136,4 @@ chmod 700 desplegar.sh
 * **Prompts útiles empleados:**
   * *"Dame una plantilla completa en Markdown para el README.md que cumpla con todos los requisitos de entrega del proyecto, incluyendo el cálculo de costes y que la tenga que rellenar yo."*
   
-<!-- * **Error o propuesta incorrecta detectada y corregida:**
-  * *Propuesta inicial:* 
-  * *Comprobación y corrección:* -->
+* **Uso y revisión de la respuesta:** La estructura generada se utilizó como plantilla base para organizar las secciones de la memoria técnica, adaptando posteriormente todos los apartados, nombres de recursos, capturas y cálculos reales de mi entorno en AWS.
