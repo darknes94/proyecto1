@@ -2,6 +2,7 @@
 
 * **Alumna:** Mª Inés Antón Castelló
 * **Entorno:** AWS Academy Learner Lab · Región `us-east-1`
+<!-- * **Vídeo demostración:** [Ver vídeo en YouTube / Drive](https://enlace) -->
 
 ---
 
@@ -93,12 +94,28 @@ Se ha lanzado la instancia `libreria-web` (`t3.micro`, Amazon Linux 2023) en `li
 
 ## 4. Nivel Avanzado (Automatización con AWS CLI)
 
+El script [`scripts/desplegar.sh`](scripts/desplegar.sh) automatiza la obtención de la última AMI de Amazon Linux 2023, la creación del grupo de seguridad con sus reglas y el lanzamiento de la instancia EC2 esperando hasta obtener su IP pública.
+Los dos scripts de desplegar.sh y user-data1.sh deben estar juntos en la misma carpeta.
+
+```bash
+# Ejecución del script
+chmod 700 desplegar.sh
+./desplegar.sh
+```
+
+* **Salida de la ejecución en terminal:**
+  ![Ejecución CLI](img/12a-script-cli.png)
+* **Web desplegada por el script:**
+  ![Web CLI](img/12b-web-cli.png)
+
+---
+
 ## 5. Uso de inteligencia artificial
 
 * **Herramienta utilizada:** Gemini (Google)
 * **Prompts útiles empleados:**
   * *"Dame una plantilla completa en Markdown para el README.md que cumpla con todos los requisitos de entrega del proyecto, incluyendo el cálculo de costes y que la tenga que rellenar yo."*
   
-* **Error o propuesta incorrecta detectada y corregida:**
+<!-- * **Error o propuesta incorrecta detectada y corregida:**
   * *Propuesta inicial:* 
-  * *Comprobación y corrección:* 
+  * *Comprobación y corrección:* -->
