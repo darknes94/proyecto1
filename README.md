@@ -20,7 +20,7 @@ A continuación se muestra el diagrama de la infraestructura desplegada en `us-e
 
 Se han creado manualmente los siguientes recursos en `us-east-1` (Virginia del norte):
 
-* **VPC (`libreria-vpc`):** Bloque CIDR:** `10.0.0.0/16`
+* **VPC (`libreria-vpc`):** Bloque CIDR `10.0.0.0/16`
   * **Opciones DNS:** Habilitadas *Resolución de DNS* y *Nombres de host DNS* (necesarias para el enrutamiento ponderado con Route 53 del apartado 3).
   ![VPC](img/1-vpc.png)
   
