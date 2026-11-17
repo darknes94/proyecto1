@@ -104,7 +104,7 @@ for i in {1..20}; do curl -s [http://web.libreria.lab](http://web.libreria.lab) 
 
 ### M2. Actualización del coste
 
-* **Enlace a la estimación actualizada:** [Ver presupuesto Nivel Medio](https://calculator.aws/#/estimate?id=35f2894320b6a77cbb0b0fb8ef39810a931005ca)
+* **Enlace a la estimación actualizada:** [Ver presupuesto Nivel Medio](https://calculator.aws/#/estimate?id=26221a6957804138287c52f2e1e67863a82c96fc)
 * **Coste mensual estimado:** ~16,46 USD/mes (2 instancias `t3.micro` 24/7 + 1 zona hospedada en Route 53).
 * **Comparativa y justificación:** El coste aumenta aproximadamente al doble respecto al nivel básico al incorporar una segunda instancia y la zona hospedada (aunque esta sólo suma 0,9 USD/mes).
 
