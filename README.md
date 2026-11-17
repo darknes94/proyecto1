@@ -126,7 +126,7 @@ Para automatizar el despliegue sin depender de la consola web, se ha desarrollad
 > **Nota:** Dado que el comando `aws ec2 run-instances` referencia el archivo mediante la ruta relativa `file://user-data1.sh`, ambos scripts deben estar en la misma carpeta.
 
 ```bash
-# Entrar al directorio de scripts, dar permisos de ejecución al propietario y lanzar el despliegue
+# Dentro de la carpeta de scripts, hay que dar permisos de ejecución al propietario y luego lanzar el despliegue
 chmod 700 desplegar.sh
 ./desplegar.sh
 ```
